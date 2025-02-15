@@ -1,0 +1,82 @@
+body {
+    background-color: green;
+}
+h1{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 80px;
+    color: white;
+}
+p{
+    color: white;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 30px;
+}
+
+img{
+    display: block;
+    margin: 8px 8px 8px 8px;
+    float: center;
+}
+
+.navigation {
+    color: white;
+    font-size: 60px;
+}
+
+.navigation a:hover {
+    background-color: white;
+}
+
+.navigation a:active{
+    color: green;
+    font-weight: bold;
+}
+
+/* Media Queries */
+/* For tablets */
+@media screen and (max-width: 768px) {
+    h1 {
+        font-size: 50px;
+    }
+    p {
+        font-size: 24px;
+    }
+    .navigation {
+        font-size: 40px;
+    }
+    img {
+        margin: 15px auto;
+    }
+}
+
+/* For mobile phones */
+@media screen and (max-width: 480px) {
+    h1 {
+        font-size: 36px;
+    }
+    p {
+        font-size: 18px;
+    }
+    .navigation {
+        font-size: 30px;
+    }
+    img {
+        margin: 10px auto;
+    }
+    body {
+        padding: 10px;
+    }
+}
+
+/* For very small screens */
+@media screen and (max-width: 320px) {
+    h1 {
+        font-size: 28px;
+    }
+    p {
+        font-size: 16px;
+    }
+    .navigation {
+        font-size: 24px;
+    }
+}
