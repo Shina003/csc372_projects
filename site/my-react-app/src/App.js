@@ -129,13 +129,13 @@ const ImageGallery = () => {
 
 const Section = ({ title, content, alignment }) => {
   return(
-    <Container className="my-5">
+    <Container style={{ marginTop: '8rem' }}> 
       <div className={`text-${alignment}`}>
         <h2 className="display-4 mb-4 fw-normal">{title}</h2>
         <p className="lead" style={{ 
           maxWidth: '600px', 
-          margin: alignment === 'end' ? 'left: auto' : '0',
-          textAlign: alignment  // This ensures the paragraph text aligns properly
+          margin: alignment === 'end' ? 'auto 0 auto auto' : '0',
+          textAlign: alignment
         }}>
           {content}
         </p>
@@ -146,16 +146,40 @@ const Section = ({ title, content, alignment }) => {
 
 
 const Footer = () => {
-  return(
-    <footer>
-      <div>
-        <a href="#">Twitter</a>
-        <a href="#">Instagram</a>
-        <a href="#">Facebook</a>
-      </div>
-      <p>© 2024 Fountain Brothers</p>
+  return (
+    <footer className="bg-light mt-5 py-4">
+      <Container>
+        <Row className="justify-content-center text-center">
+          {/* Social Media Links */}
+          <Col xs={12} className="mb-3">
+            <div className="d-flex justify-content-center gap-4">
+              <a href="#" className="text-secondary text-decoration-none">Twitter</a>
+              <a href="#" className="text-secondary text-decoration-none">Instagram</a>
+              <a href="#" className="text-secondary text-decoration-none">Facebook</a>
+            </div>
+          </Col>
+
+          {/* Navigation Links */}
+          <Col xs={12} className="mb-3">
+            <div className="d-flex justify-content-center gap-4">
+              <Nav.Link href="#" className="text-secondary">Success Stories</Nav.Link>
+              <Nav.Link href="#" className="text-secondary">Goals</Nav.Link>
+              <Nav.Link href="#" className="text-secondary">Members</Nav.Link>
+              <Nav.Link href="#" className="text-secondary">Events</Nav.Link>
+              <Nav.Link href="#" className="text-secondary">About</Nav.Link>
+            </div>
+          </Col>
+
+          {/* Copyright */}
+          <Col xs={12}>
+            <p className="text-secondary mb-0">
+              © {new Date().getFullYear()} Fountain Brothers
+            </p>
+          </Col>
+        </Row>
+      </Container>
     </footer>
-  )
+  );
 }
 
 function App() {
@@ -165,7 +189,8 @@ function App() {
   const visionContent = "Our vision is to liberate our community from the shackles of poverty, unlocking a brighter future through education, self-awareness, and economic empowerment. We strive to build a society where every individual has equal access to opportunities, resources, and support, enabling them to reach their full potential.";
 
   return(
-    <div>
+    
+    <div className="bg-light">
       <Navigation />
       <Header />
       <ImageGallery />
