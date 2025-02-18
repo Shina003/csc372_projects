@@ -212,7 +212,7 @@ function App() {
   const visionContent = "Our vision is to liberate our community from the shackles of poverty, unlocking a brighter future through education, self-awareness, and economic empowerment. We strive to build a society where every individual has equal access to opportunities, resources, and support, enabling them to reach their full potential.";
 
   return(
-    <div>
+    <div style={{ backgroundColor: '#808080' }}>
       <Navigation />
       <Header />
       <ImageGallery />
