@@ -1,0 +1,18 @@
+
+  @media (max-width: 991px) {
+    .navbar-collapse {
+      position: fixed !important;
+      top: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      width: 250px !important;
+      background-color: #008000 !important;
+      padding-top: 80px !important;
+      transform: translateX(100%) !important;
+      transition: transform 0.3s ease-in-out !important;
+    }
+
+    .navbar-collapse.show {
+      transform: translateX(0) !important;
+    }
+  }
