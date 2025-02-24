@@ -8,7 +8,7 @@ import { SuccessStories } from './pages/SuccessStories';
 import { Goals } from './pages/Goals';
 import { Members } from './pages/Members';
 import { Events } from './pages/Events';
-import { About } from './pages/About';
+import { Contact } from './pages/Contact';  // Add this import
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
@@ -28,7 +28,7 @@ const App = () => {
             <Route path="/goals" element={<Goals />} />
             <Route path="/members" element={<Members />} />
             <Route path="/events" element={<Events />} />
-            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />  {/* Update this route */}
           </Routes>
         </main>
         <Footer />

@@ -35,7 +35,7 @@ export const Navigation = () => {
             <Nav.Link as={Link} to="/goals" className="text-white text-center text-lg-start">Goals</Nav.Link>
             <Nav.Link as={Link} to="/members" className="text-white text-center text-lg-start">Members</Nav.Link>
             <Nav.Link as={Link} to="/events" className="text-white text-center text-lg-start">Events</Nav.Link>
-            <Nav.Link as={Link} to="/about" className="text-white text-center text-lg-start">About</Nav.Link>
+            <Nav.Link as={Link} to="/contact" className="text-white text-center text-lg-start">Contact</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
