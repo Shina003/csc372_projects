@@ -1,0 +1,22 @@
+{
+    "books": [
+        {
+            "title": "Don Quixote",
+            "author": "Miguel de Cervantes",
+            "sold": 500,
+            "description": "Don Quixote is a classic novel from 1605 which portraits the life and insightful journey of Don Quixote de la Mancha, a Spanish man who seems to be losing his mind on his quest to become a knight and restore chivalry alongside with a farmer named Sancho Panza, with whom he fights multiple imaginary enemies and faces a series of fantastic challenges."
+        },
+        {
+            "title": "A Tale of Two Cities",
+            "author": "Charles Dickens",
+            "sold": 200,
+            "description": "The novel tells the story of the French Doctor Manette, his 18-year-long imprisonment in the Bastille in Paris, and his release to live in London with his daughter Lucie whom he had never met. The story is set against the conditions that led up to the French Revolution and the Reign of Terror."
+        },
+        {
+            "title": "The Lord of the Rings",
+            "author": "J.R.R. Tolkien",
+            "sold": 150,
+            "description": "The Lord of the Rings is the saga of a group of sometimes reluctant heroes who set forth to save their world from consummate evil. Its many worlds and creatures were drawn from Tolkien's extensive knowledge of philology and folklore."
+        }
+    ]
+}
