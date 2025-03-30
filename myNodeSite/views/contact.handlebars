@@ -1,0 +1,112 @@
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1 class="display-4 text-center mb-5">Contact Us</h1>
+
+            <div id="successMessage" class="alert alert-success text-center" role="alert" style="display: none;">
+                <p class="mb-2"></p>
+                <button id="resetForm" class="btn btn-success">Send another
+                    message</button>
+            </div>
+
+            <form id="contactForm" class="p-4 border rounded shadow-sm bg-white">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name"
+                        required />
+                    <div class="invalid-feedback">Please enter your name</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email"
+                        required />
+                    <div class="invalid-feedback">Please enter a valid
+                        email</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone</label>
+                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter your phone number"
+                        required />
+                    <div class="invalid-feedback">Please enter your phone
+                        number</div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="message" class="form-label">Message</label>
+                    <textarea class="form-control" id="message" name="message" rows="4" placeholder="Enter your message"
+                        required></textarea>
+                    <div class="invalid-feedback">Please enter your
+                        message</div>
+                </div>
+
+                <button id="submitButton" type="submit" class="btn btn-success w-100">
+                    Send Message
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        // Cache jQuery selections
+        const $form = $('#contactForm');
+        const $inputs = $('.form-control');
+        const $submitButton = $('#submitButton');
+        const $successMessage = $('#successMessage');
+
+        // Initially hide the success message
+        $successMessage.hide();
+
+        // Form validation and submission
+        $form.on('submit', function (e) {
+            e.preventDefault();
+            let isValid = true;
+            const formData = {};
+
+            // Validate each input
+            $inputs.each(function () {
+                const $input = $(this);
+                const value = $input.val().trim();
+                formData[$input.attr('name')] = value;
+
+                if (!value) {
+                    isValid = false;
+                    $input.addClass('is-invalid');
+                } else {
+                    $input.removeClass('is-invalid').addClass('is-valid');
+                }
+            });
+
+            if (isValid) {
+                // Disable form and show loading state
+                $submitButton.prop('disabled', true).html(
+                    '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...'
+                );
+
+                // Simulate form submission
+                setTimeout(() => {
+                    $form.slideUp(400, () => {
+                        $successMessage
+                            .html(`<p class="mb-2">Thank you for your message, ${formData.name}! We'll get back to you soon.</p>
+                    <button id="resetForm" class="btn btn-success">Send another message</button>`)
+                            .fadeIn(400);
+
+                        // Reset form on clicking "Send another message"
+                        $('#resetForm').on('click', function () {
+                            $successMessage.fadeOut(400, () => {
+                                $form.trigger('reset')
+                                    .find('.is-valid, .is-invalid')
+                                    .removeClass('is-valid is-invalid');
+                                $submitButton.prop('disabled', false).html('Send Message');
+                                $form.slideDown(400);
+                            });
+                        });
+                    });
+                }, 1500);
+            }
+        });
+    });
+</script>

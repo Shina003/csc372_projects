@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{title}} - Fountain Brothers</title>
+        <link rel="stylesheet" href="/css/App.css">
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    </head>
+    <body>
+        <!-- Navigation -->
+        <nav class="navbar navbar-expand-lg sticky-top"
+            style="background-color: #008000;">
+            <div class="container-fluid position-relative">
+                <a class="navbar-brand d-lg-flex mx-auto mx-lg-0" href="/">
+                    <img
+                        src="/images/logoSite.jpg"
+                        alt="website logo"
+                        style="width: 60px; height: 60px;"
+                        class="img-fluid" />
+                </a>
+
+                <button
+                    class="navbar-toggler border-0"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#basic-navbar-nav"
+                    aria-controls="basic-navbar-nav"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                    style="position: fixed; top: 15px; right: 15px; z-index: 1030; background-color: transparent; box-shadow: none; outline: none;">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse slide-in"
+                    id="basic-navbar-nav">
+                    <ul
+                        class="navbar-nav mx-auto gap-4 flex-column flex-lg-row">
+                        <li class="nav-item">
+                            <a
+                                class="nav-link text-white text-center text-lg-start {{#if isSuccessStories}}active{{/if}}"
+                                href="/success-stories">Success Stories</a>
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                class="nav-link text-white text-center text-lg-start {{#if isGoals}}active{{/if}}"
+                                href="/goals">Goals</a>
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                class="nav-link text-white text-center text-lg-start {{#if isMembers}}active{{/if}}"
+                                href="/members">Members</a>
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                class="nav-link text-white text-center text-lg-start {{#if isEvents}}active{{/if}}"
+                                href="/events">Events</a>
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                class="nav-link text-white text-center text-lg-start {{#if isContact}}active{{/if}}"
+                                href="/contact">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main content area -->
+        <main>
+            {{{body}}}
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer mt-auto py-3 bg-light">
+            <div class="container text-center">
+                <span class="text-muted">&copy; 2025 Fountain Brothers of
+                    Nigeria. All rights reserved.</span>
+            </div>
+        </footer>
+
+        <!-- JavaScript files -->
+        <script src="/js/jquery-3.7.1.min.js"></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="/js/App.js"></script>
+    </body>
+</html>
