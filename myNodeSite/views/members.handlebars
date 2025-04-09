@@ -1,0 +1,72 @@
+<div class="container mt-5 mb-5">
+    <h1 class="display-4 text-center mb-5" style="color: #333;">Our Members</h1>
+    <div class="row justify-content-center">
+        {{#each members}}
+        <div class="col-md-4 col-lg-3 mb-4">
+            <div class="card h-100 member-card" data-member-id="{{@index}}">
+                <img src="{{this.image}}" class="card-img-top"
+                    alt="{{this.name}}">
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{this.name}}</h5>
+                    <p class="card-text text-muted">{{this.role}}</p>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
+
+<!-- Member Modal -->
+<div class="modal fade" id="memberModal" tabindex="-1"
+    aria-labelledby="memberModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="memberModalLabel">Member
+                    Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modalContent">
+                <!-- Content will be inserted here via JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        // Store members data from server
+        const members = {{{ json members }
+    }};
+
+    // Handle member card click
+    $('.member-card').on('click', function () {
+        const memberId = $(this).data('member-id');
+        const member = members[memberId];
+
+        // Build modal content
+        let modalContent = `
+        <div class="text-center mb-4">
+          <img src="${member.image}" class="img-fluid rounded mb-3" alt="${member.name}" style="max-height: 200px;">
+          <h4>${member.name}</h4>
+          <p class="text-muted">${member.role}</p>
+        </div>
+      `;
+
+        if (member.bio) {
+            modalContent += `<p>${member.bio}</p>`;
+        }
+
+        // Update modal and show it
+        $('#modalContent').html(modalContent);
+        $('#memberModalLabel').text(member.name);
+        const memberModal = new bootstrap.Modal(document.getElementById('memberModal'));
+        memberModal.show();
+    });
+  });
+</script>
