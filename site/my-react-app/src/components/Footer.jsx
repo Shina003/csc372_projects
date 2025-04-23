@@ -17,10 +17,8 @@ export const Footer = () => {
 
           <Col xs={12} className="mb-3">
             <div className="d-flex justify-content-center gap-4">
-              <Nav.Link as={Link} to="/success-stories" className="text-white">Success Stories</Nav.Link>
-              <Nav.Link as={Link} to="/goals" className="text-white">Goals</Nav.Link>
+              <Nav.Link as={Link} to="/home" className="text-white">Home</Nav.Link>
               <Nav.Link as={Link} to="/members" className="text-white">Members</Nav.Link>
-              <Nav.Link as={Link} to="/events" className="text-white">Events</Nav.Link>
               <Nav.Link as={Link} to="/about" className="text-white">About</Nav.Link>
             </div>
           </Col>

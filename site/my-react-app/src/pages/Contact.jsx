@@ -180,10 +180,7 @@ export const Contact = () => {
                 isInvalid={!!errorMessages.contactType}
               >
                 <option value="general">General Inquiry</option>
-                <option value="support">Support</option>
-                <option value="event">Event Information</option>
                 <option value="membership">Membership</option>
-                <option value="donation">Donation</option>
               </Form.Select>
               <Form.Control.Feedback type="invalid">
                 {errorMessages.contactType || "Please select a reason for contact."}
@@ -232,10 +229,10 @@ export const Contact = () => {
               <strong>Email:</strong> info@fountainbrothers.org
             </p>
             <p className="mb-2">
-              <strong>Phone:</strong> +234 123 456 7890
+              <strong>Phone:</strong> +1 111 111 1111
             </p>
             <p>
-              <strong>Address:</strong> Egbeda, Lagos State, Nigeria
+              <strong>Address:</strong> Null
             </p>
           </div>
         </Col>
