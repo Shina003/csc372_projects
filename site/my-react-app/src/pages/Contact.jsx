@@ -1,176 +1,277 @@
-/* global $ */
-import React, { useEffect } from 'react';
-import { Container, Row, Col, Form } from 'react-bootstrap';
+// src/pages/Contact.jsx
+import React, { useState, useEffect } from 'react';
+import { Container, Row, Col, Form, Button, Alert } from 'react-bootstrap';
 
 export const Contact = () => {
-  useEffect(() => {
-    // Check if jQuery is loaded
-    if (typeof window.jQuery === 'undefined') {
-      console.log('Loading jQuery from local file...');
-      const script = document.createElement('script');
-      script.src = '/js/jquery-3.7.1.min.js';
-      script.onload = () => {
-        console.log('jQuery loaded successfully');
-        initializeJQuery();
-      };
-      document.head.appendChild(script);
-    } else {
-      console.log('jQuery already loaded');
-      initializeJQuery();
+  // Form state
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    contactType: 'general',
+    message: ''
+  });
+  
+  // Form submission and validation states
+  const [validated, setValidated] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [responseMessage, setResponseMessage] = useState('');
+  const [errorMessages, setErrorMessages] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Handle input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+    
+    // Clear error message when field is edited
+    if (errorMessages[name]) {
+      setErrorMessages({
+        ...errorMessages,
+        [name]: ''
+      });
     }
+  };
 
-    const initializeJQuery = () => {
-      // Cache jQuery selections
-      const $form = $('#contactForm');
-      const $inputs = $('.form-control');
-      const $submitButton = $('#submitButton');
-      const $successMessage = $('#successMessage');
-
-      // Initially hide the success message
-      $successMessage.hide();
-
-      // Add input focus effects
-      $inputs.on('focus', function() {
-        $(this).parent().addClass('focused').fadeIn(300);
-      }).on('blur', function() {
-        if (!$(this).val()) {
-          $(this).parent().removeClass('focused');
-        }
-      });
-
-      // Form validation and submission
-      $form.on('submit', function(e) {
-        e.preventDefault();
-        let isValid = true;
-        const formData = {};
-
-        // Validate each input with animation
-        $inputs.each(function() {
-          const $input = $(this);
-          const value = $input.val().trim();
-          formData[$input.attr('name')] = value;
-
-          if (!value) {
-            isValid = false;
-            $input
-              .addClass('is-invalid')
-              .parent()
-              .find('.invalid-feedback')
-              .fadeIn(200);
-          } else {
-            $input
-              .removeClass('is-invalid')
-              .addClass('is-valid')
-              .parent()
-              .find('.invalid-feedback')
-              .fadeOut(200);
-          }
-        });
-
-        if (isValid) {
-          // Disable form and show loading state
-          $submitButton.prop('disabled', true).html(
-            '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...'
-          );
-
-          // Simulate form submission (replace with actual API call)
-          setTimeout(() => {
-            $form.slideUp(400, () => {
-              $successMessage
-                .html(`Thank you for your message, ${formData.name}! We'll get back to you soon.`)
-                .fadeIn(400);
-            });
-          }, 1500);
-        }
-      });
-
-      // Reset form on clicking "Send another message"
-      $('#resetForm').on('click', function() {
-        $successMessage.fadeOut(400, () => {
-          $form.trigger('reset')
-            .find('.is-valid, .is-invalid')
-            .removeClass('is-valid is-invalid');
-          $submitButton.prop('disabled', false).html('Send Message');
-          $form.slideDown(400);
-        });
-      });
-    };
-
-    // Cleanup
-    return () => {
-      if (window.jQuery) {
-        $('.form-control').off();
-        $('#contactForm').off();
-        $('#resetForm').off();
+  // Check for PHP response message if the page was reloaded after form submission
+  // This is for non-JS fallback
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const message = urlParams.get('message');
+    const success = urlParams.get('success');
+    
+    if (message) {
+      setResponseMessage(message);
+      if (success === 'true') {
+        setShowSuccess(true);
+      } else {
+        setShowError(true);
       }
-    };
+    }
   }, []);
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    
+    // Client-side form validation
+    if (form.checkValidity() === false) {
+      e.stopPropagation();
+      setValidated(true);
+      return;
+    }
+    
+    // Show loading state
+    setIsSubmitting(true);
+    
+    try {
+      // Send form data to PHP backend for server-side validation
+      const formDataToSend = new FormData();
+      Object.keys(formData).forEach(key => {
+        formDataToSend.append(key, formData[key]);
+      });
+
+      const response = await fetch('process_contact.php', {
+        method: 'POST',
+        body: formDataToSend,
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'  // Signal that this is an AJAX request
+        }
+      });
+
+      const result = await response.json();
+      
+      if (result.success) {
+        // Show success message and reset form
+        setShowSuccess(true);
+        setShowError(false);
+        setResponseMessage(result.message);
+        setErrorMessages({});
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          contactType: 'general',
+          message: ''
+        });
+        setValidated(false);
+        
+        // Hide success message after 5 seconds
+        setTimeout(() => {
+          setShowSuccess(false);
+        }, 5000);
+      } else {
+        // Show error messages from server-side validation
+        setShowError(true);
+        setResponseMessage(result.message);
+        setErrorMessages(result.errors || {});
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setShowError(true);
+      setResponseMessage('There was an error sending your message. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <Container className="mt-5 mb-5">
       <Row className="justify-content-center">
-        <Col md={8}>
-          <h1 className="display-4 text-center mb-5">Contact Us</h1>
+        <Col md={8} lg={6}>
+          <h1 className="display-4 text-center mb-4" style={{ color: '#333' }}>Contact Us</h1>
           
-          <div id="successMessage" className="alert alert-success text-center" role="alert">
-            <p className="mb-2"></p>
-            <button id="resetForm" className="btn btn-success">Send another message</button>
-          </div>
-
-          <Form id="contactForm" className="p-4 border rounded shadow-sm bg-white">
-            <Form.Group className="mb-3">
-              <Form.Label>Name</Form.Label>
-              <Form.Control 
-                type="text" 
+          {showSuccess && (
+            <Alert variant="success" onClose={() => setShowSuccess(false)} dismissible>
+              {responseMessage || "Thank you for your message! We'll get back to you soon."}
+            </Alert>
+          )}
+          
+          {showError && (
+            <Alert variant="danger" onClose={() => setShowError(false)} dismissible>
+              {responseMessage || "There was an error sending your message. Please try again later."}
+              {Object.keys(errorMessages).length > 0 && (
+                <ul className="mb-0 mt-2">
+                  {Object.values(errorMessages).map((message, index) => (
+                    message && <li key={index}>{message}</li>
+                  ))}
+                </ul>
+              )}
+            </Alert>
+          )}
+          
+          {/* Form with action and method for non-JS fallback */}
+          <Form 
+            noValidate 
+            validated={validated} 
+            onSubmit={handleSubmit}
+            action="process_contact.php"
+            method="post"
+            encType="multipart/form-data"
+          >
+            <Form.Group className="mb-3" controlId="contactName">
+              <Form.Label>Name <span className="text-danger">*</span></Form.Label>
+              <Form.Control
+                type="text"
                 name="name"
-                placeholder="Enter your name"
+                value={formData.name}
+                onChange={handleChange}
                 required
+                placeholder="Your name"
+                isInvalid={!!errorMessages.name}
               />
-              <div className="invalid-feedback">Please enter your name</div>
+              <Form.Control.Feedback type="invalid">
+                {errorMessages.name || "Please provide your name."}
+              </Form.Control.Feedback>
             </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Email</Form.Label>
-              <Form.Control 
-                type="email" 
+            
+            <Form.Group className="mb-3" controlId="contactEmail">
+              <Form.Label>Email <span className="text-danger">*</span></Form.Label>
+              <Form.Control
+                type="email"
                 name="email"
-                placeholder="Enter your email"
+                value={formData.email}
+                onChange={handleChange}
                 required
+                placeholder="Your email address"
+                isInvalid={!!errorMessages.email}
               />
-              <div className="invalid-feedback">Please enter a valid email</div>
+              <Form.Control.Feedback type="invalid">
+                {errorMessages.email || "Please provide a valid email address."}
+              </Form.Control.Feedback>
             </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Phone</Form.Label>
-              <Form.Control 
-                type="tel" 
+            
+            <Form.Group className="mb-3" controlId="contactPhone">
+              <Form.Label>Phone Number</Form.Label>
+              <Form.Control
+                type="tel"
                 name="phone"
-                placeholder="Enter your phone number"
-                required
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="Your phone number (optional)"
+                isInvalid={!!errorMessages.phone}
               />
-              <div className="invalid-feedback">Please enter your phone number</div>
+              <Form.Control.Feedback type="invalid">
+                {errorMessages.phone}
+              </Form.Control.Feedback>
+              <Form.Text className="text-muted">
+                Format: +1234567890 or (123) 456-7890
+              </Form.Text>
             </Form.Group>
-
-            <Form.Group className="mb-4">
-              <Form.Label>Message</Form.Label>
-              <Form.Control 
-                as="textarea" 
+            
+            <Form.Group className="mb-3" controlId="contactType">
+              <Form.Label>Reason for Contact <span className="text-danger">*</span></Form.Label>
+              <Form.Select
+                name="contactType"
+                value={formData.contactType}
+                onChange={handleChange}
+                required
+                isInvalid={!!errorMessages.contactType}
+              >
+                <option value="general">General Inquiry</option>
+                <option value="support">Support</option>
+                <option value="event">Event Information</option>
+                <option value="membership">Membership</option>
+                <option value="donation">Donation</option>
+              </Form.Select>
+              <Form.Control.Feedback type="invalid">
+                {errorMessages.contactType || "Please select a reason for contact."}
+              </Form.Control.Feedback>
+            </Form.Group>
+            
+            <Form.Group className="mb-3" controlId="contactMessage">
+              <Form.Label>Message <span className="text-danger">*</span></Form.Label>
+              <Form.Control
+                as="textarea"
                 name="message"
-                rows={4}
-                placeholder="Enter your message"
+                value={formData.message}
+                onChange={handleChange}
                 required
+                placeholder="Your message"
+                style={{ height: '150px' }}
+                isInvalid={!!errorMessages.message}
               />
-              <div className="invalid-feedback">Please enter your message</div>
+              <Form.Control.Feedback type="invalid">
+                {errorMessages.message || "Please provide a message."}
+              </Form.Control.Feedback>
             </Form.Group>
-
-            <button 
-              id="submitButton"
-              type="submit" 
-              className="btn btn-success w-100"
-            >
-              Send Message
-            </button>
+            
+            <div className="d-grid gap-2">
+              <Button 
+                type="submit" 
+                style={{ 
+                  backgroundColor: '#008000',
+                  borderColor: '#008000'
+                }}
+                className="py-2"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'Sending...' : 'Send Message'}
+              </Button>
+            </div>
           </Form>
+        </Col>
+      </Row>
+      
+      <Row className="mt-5 justify-content-center">
+        <Col md={8} lg={6}>
+          <div className="text-center">
+            <h3 className="mb-3">Other Ways to Reach Us</h3>
+            <p className="mb-2">
+              <strong>Email:</strong> info@fountainbrothers.org
+            </p>
+            <p className="mb-2">
+              <strong>Phone:</strong> +1 111 111 1111
+            </p>
+            <p>
+              <strong>Address:</strong> Earth
+            </p>
+          </div>
         </Col>
       </Row>
     </Container>
