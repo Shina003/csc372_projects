@@ -49,6 +49,7 @@ if (!isset($_SESSION['visit_count'])) {
     $_SESSION['visit_count']++;
     $_SESSION['last_visit'] = date('Y-m-d H:i:s');
 }
+//
 
 // Handle session termination
 if (isset($_GET['end_session']) && $_GET['end_session'] === 'true') {
