@@ -1,18 +1,32 @@
-
--- Create the members table with just name and bio
+-- Create the Members table
 CREATE TABLE members (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
-  bio TEXT
+  member_id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL
 );
 
--- Add index for better performance on name searches
-CREATE INDEX idx_member_name ON members(name);
+-- Create the Biographies table
+CREATE TABLE biographies (
+  bio_id INT AUTO_INCREMENT PRIMARY KEY,
+  member_id INT NOT NULL,
+  bio_text TEXT,
+  FOREIGN KEY (member_id) REFERENCES members(member_id) ON DELETE CASCADE
+);
 
--- Sample insert statements for the provided data
-INSERT INTO members (name, bio) VALUES (
-  'Segun Simeon omotoye',
-  'Born 2nd January
+-- Insert ALL members into Members table
+INSERT INTO members (name) VALUES
+('Segun Simeon Omotoye'),
+('Omo''ba Boye Adeyemi'),
+('Akin'),
+('Esan Olayinka kole'),
+('Ayoola Anthony Jombo'),
+('Alade Adeboye Adedapo'),
+('Akeem Olusola Oseni'),
+('Kehinde Adewumi'),
+('Esan Olaiya Olayinka');
+
+-- Insert ALL biographies into Biographies table
+INSERT INTO biographies (member_id, bio_text) VALUES
+(1, 'Born 2nd January
 State of origin-Ekiti
 Town-Aaye Ekiti
 Born and raised partly in -Ijebu igbo now OGUN state
@@ -29,50 +43,30 @@ Established own company 1999- Jenjuseg Nigeria limited a contractor firm based i
 Move to America 2014 presently work as program Director justice resources institute a community social development agency. United state of America.
 Married to Mrs olajumoke olubukola omotoye
 Blessed with 3 children
-Names - jenrade omotoye, Ademide omotoye & Adedapo omotoye'
-);
+Names - jenrade omotoye, Ademide omotoye & Adedapo omotoye'),
+(2, 'Omo''ba Boye Adeyemi is a prince from Ilawe Ekiti. He had his elementary and part of his secondary education in Ilawe Ekiti and completed his secondary education at Ikosi High School, Ketu, Lagos before proceeding to Ekiti State University, formally known as Ondo State University for his University education, where he obtained a Bachelor of Laws degree. He thereafter attended the Nigerian Law School as one of the pioneer set of the Abuja campus, where he obtained his Barrister at Law certificate and was called to the Nigerian Bar in 1999.
 
-INSERT INTO members (name, bio) VALUES (
-  'Omo''ba Boye Adeyemi',
-  'Omo''ba Boye Adeyemi is a prince from Ilawe Ekiti. He had his elementary and part of his secondary education in Ilawe Ekiti and completed his secondary education at Ikosi High School, Ketu, Lagos before proceeding to Ekiti State University, formally known as Ondo State University for his University education, where he obtained a Bachelor of Laws degree. He thereafter attended the Nigerian Law School as one of the pioneer set of the Abuja campus, where he obtained his Barrister at Law certificate and was called to the Nigerian Bar in 1999.
-
-Boye practiced law as a litigator for about ten years, specializing in Maritime law before he joined Shell Nigeria Legal team in 2009. He''s currently the Company Secretary of Shell Nig. Closed Pension Fund Administrator Ltd. based in Lagos. He''s happily married with children.'
-);
-
-INSERT INTO members (name, bio) VALUES (
-  'Akin',
-  'Akin is a seasoned Fintech expert and top-performing digital payments specialist with over 20 years of extensive cross-functional experience in delivering value-driven payment solutions across the EEMEA region''s banking and payment industries.
+Boye practiced law as a litigator for about ten years, specializing in Maritime law before he joined Shell Nigeria Legal team in 2009. He''s currently the Company Secretary of Shell Nig. Closed Pension Fund Administrator Ltd. based in Lagos. He''s happily married with children.'),
+(3, 'Akin is a seasoned Fintech expert and top-performing digital payments specialist with over 20 years of extensive cross-functional experience in delivering value-driven payment solutions across the EEMEA region''s banking and payment industries.
 
 Throughout his career, Akin has collaborated with prominent financial institutions at local and Pan-African levels, driving innovative digital payment initiatives and developments across the continent.
 
 Notably, Akin played a pioneering role in the team that collaborated with the Federal Ministry of Communications, Innovation, Science, and Technology to develop Nigeria''s Artificial Intelligence (AI) adoption policy document.
 
-On a personal note, Akin was born on March 26th to Pa Francis and Madam Elizabeth Ajayi of Iyin Ekiti. He is happily married with three children. Akin is a people person who enjoys building meaningful relationships and friendships.'
-);
-
-INSERT INTO members (name, bio) VALUES (
-  'Esan Olayinka kole',
-  'Esan Olayinka kole was born on the 28th February, 1971 and is a native of Ilawe Ekiti. He had his primary school education both at Mushin, Lagos state and Ilawe Ekiti, Ekiti State. He completed his secondary school education at United High School, Ilawe Ekiti in the year 1988.
+On a personal note, Akin was born on March 26th to Pa Francis and Madam Elizabeth Ajayi of Iyin Ekiti. He is happily married with three children. Akin is a people person who enjoys building meaningful relationships and friendships.'),
+(4, 'Esan Olayinka kole was born on the 28th February, 1971 and is a native of Ilawe Ekiti. He had his primary school education both at Mushin, Lagos state and Ilawe Ekiti, Ekiti State. He completed his secondary school education at United High School, Ilawe Ekiti in the year 1988.
 
 Kole proceeded to Ondo State University, Ado-Ekiti, then Ondo State where he bagged a Bachelor of Arts in English Language.
 
 Kole started his job career with Pathfinders International (a ground handling company) attached with British Airways as Customer Service Agent in charge of Baggage Department from year 2000 - 2009. He joined Emirates Airline in the year 2009 till present day as Senior Airport Service Agent.
 
-Kole is happily married with 3 children.'
-);
-
-INSERT INTO members (name, bio) VALUES (
-  'Ayoola Anthony Jombo',
-  'Ayoola Anthony Jombo is from Ilawe Ekiti, headquarters of Ekiti South West Local Government in Ekiti State. He was born on 2nd of December. He attended St Mary''s and St John''s primary school in Ilawe Ekiti and Ikere Ekiti respectively.
+Kole is happily married with 3 children.'),
+(5, 'Ayoola Anthony Jombo is from Ilawe Ekiti, headquarters of Ekiti South West Local Government in Ekiti State. He was born on 2nd of December. He attended St Mary''s and St John''s primary school in Ilawe Ekiti and Ikere Ekiti respectively.
 He attended Ahmadiya Grammar School Ogbagi Akoko and Corpus Christi College Ilawe Ekiti for his secondary school. He attended University of Ilorin where he studied Political Science and graduated with honours.
 After his mandatory one year youth service, he joined Pathfinders International Limited at Murtala Muhammed International Airport as Aviation Security. He later joined Skyway Aviation Company Limited (SACHOL) as a document security officer where he specialized in detecting fake documents. He worked at both Murtala Muhammed international Airport and Malam Aminu Kano Airport for SACHOL. He is presently self-employed.
 Ayoola is a community leader, he is presently the head (Giwa) of his age grades presently.
-He is married with children.'
-);
-
-INSERT INTO members (name, bio) VALUES (
-  'Alade Adeboye Adedapo',
-  'Alade Adeboye Adedapo
+He is married with children.'),
+(6, 'Alade Adeboye Adedapo
 Seasoned Banker & Transformational Leader
 With over 19 years of experience in banking operations, Alade Adeboye Adedapo has established himself as a seasoned expert in the field. His extensive background spans various operational departments, including cash and teller operations, local and international funds transfer, and clearing office management.
 
@@ -84,21 +78,13 @@ Career Transition:
 In 2022, Alade relocated to the United Kingdom, where he is currently exploring opportunities in the energy sector.
 
 Personal Life:
-Alade is a devoted family man and friend, known for his vibrant personality and ability to light up any gathering. Born on April 7th to Elder J.A. Alade and Mrs. Ajibola Alade from Erinjiyan Ekiti, he is happily married to Temitope Alade and blessed with two lovely children.'
-);
-
-INSERT INTO members (name, bio) VALUES (
-  'Akeem Olusola Oseni',
-  'Akeem Olusola Oseni, a true son of Ado Ekiti, was born on September 29, 1976. He began his educational journey in Ado Ekiti, later moving to Oyo town and Ile-Ife, before returning to Ado Ekiti for his tertiary education. Akeem holds a Bachelor of Science in Geology from University of Ado Ekiti and an MBA in Marketing from the University of Lagos.
+Alade is a devoted family man and friend, known for his vibrant personality and ability to light up any gathering. Born on April 7th to Elder J.A. Alade and Mrs. Ajibola Alade from Erinjiyan Ekiti, he is happily married to Temitope Alade and blessed with two lovely children.'),
+(7, 'Akeem Olusola Oseni, a true son of Ado Ekiti, was born on September 29, 1976. He began his educational journey in Ado Ekiti, later moving to Oyo town and Ile-Ife, before returning to Ado Ekiti for his tertiary education. Akeem holds a Bachelor of Science in Geology from University of Ado Ekiti and an MBA in Marketing from the University of Lagos.
 
 He launched his career as a pioneer staff member at MSC Shipping Company Nigeria Limited, a world-leading container shipping company headquartered in Geneva, Switzerland. Currently, Akeem serves as the Chief Executive Officer (CEO) of Prebykym Global Nigeria Limited, a supply chain management and logistics expert, and shipping consultant.
 
-Additionally, he chairs Meliora Industries Limited, an agro-allied processing company specializing in Palm Kernel Oil production and feedmill manufacturing for poultry, piggery, and cattle ranches. Akeem is happily married to Adesuwa Oseni, and they are blessed with children.'
-);
-
-INSERT INTO members (name, bio) VALUES (
-  'Kehinde Adewumi',
-  'Highly accomplished professional with extensive experience in electrical electronics engineering, information technology management, cybersecurity management, and health informatics.
+Additionally, he chairs Meliora Industries Limited, an agro-allied processing company specializing in Palm Kernel Oil production and feedmill manufacturing for poultry, piggery, and cattle ranches. Akeem is happily married to Adesuwa Oseni, and they are blessed with children.'),
+(8, 'Highly accomplished professional with extensive experience in electrical electronics engineering, information technology management, cybersecurity management, and health informatics.
 
 Personal Details
 - Name: Kehinde Adewumi
@@ -126,14 +112,9 @@ Work Experience
 8. Owner, Fadurack Ltd, USA
 
 Personal Life
-Married to Celestina Adewumi, with five children.'
-);
-
-INSERT INTO members (name, bio) VALUES (
-  'Esan Olaiya Olayinka',
-  'Esan Olaiya Olayinka is from Ido Ekiti, the headquarters of Ido/Osi local government. He was born on December 5, 1972. He began his educational trajectory in Ekiti and later moved to Erinmope Ekiti and Ido Ekiti for his secondary education. He later returned to Ado Ekiti for his tertiary education. Olayinka holds a Bachelor of Science in Mechanical Engineering from Ondo State University, later renamed University of Ado Ekiti, and an MSC in Project /Engineering management from the Federal University of Technology, Owerri. And did his MBA at Lagos State University (LASU).
+Married to Celestina Adewumi, with five children.'),
+(9, 'Esan Olaiya Olayinka is from Ido Ekiti, the headquarters of Ido/Osi local government. He was born on December 5, 1972. He began his educational trajectory in Ekiti and later moved to Erinmope Ekiti and Ido Ekiti for his secondary education. He later returned to Ado Ekiti for his tertiary education. Olayinka holds a Bachelor of Science in Mechanical Engineering from Ondo State University, later renamed University of Ado Ekiti, and an MSC in Project /Engineering management from the Federal University of Technology, Owerri. And did his MBA at Lagos State University (LASU).
 
 He launched his career as a young engineer at Mobile Engineering Nigeria Limited, a telecommunications service provider, later moved to Huawei Technologies Ltd. The largest world-leading telecoms equipment provider with in Scenzen China. Currently, I am working with MTN communications as a transmission Specialist and manages the biggest fibre network in the whole of Africa.
 
-Additionally, he doubled as the CEO of Ylode Nigeria Limited with specialisation in importation of cars and other heavy-duty equipment. Olayinka is happily married to Adeola Esan, and they are blessed with children.'
-);
+Additionally, he doubled as the CEO of Ylode Nigeria Limited with specialisation in importation of cars and other heavy-duty equipment. Olayinka is happily married to Adeola Esan, and they are blessed with children.');
