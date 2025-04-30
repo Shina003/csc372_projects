@@ -15,3 +15,8 @@ html, body, #root {
   width: 100%;
   background-color: white;
 }
+
+/* App.css */
+.main-content {
+  flex: 1;    /* take all the leftover space */
+}

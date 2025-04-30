@@ -9,10 +9,7 @@ const MemberCard = ({ member, onClick }) => {
           src={member.photo}
           alt={member.name}
           className="member-image"
-          onError={(e) => {
-            e.target.onerror = null;
-            e.target.src = '/images/default.jpg'; // fallback if needed
-          }}
+          
         />
       </div>
       <div className="member-info">

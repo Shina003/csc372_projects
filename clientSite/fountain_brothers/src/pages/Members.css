@@ -18,3 +18,17 @@
     gap: 2rem;
   }
   
+  .bordered {
+    border: 2px solid #007bff;
+    border-radius: 8px;
+  }
+  
+  .selected {
+    background-color: #e0f7fa;
+  }
+  
+  .jquery-note {
+    font-style: italic;
+    margin-bottom: 1rem;
+  }
+  

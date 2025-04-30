@@ -20,6 +20,7 @@ const Footer = () => {
       <p className="footer-copy">
         © {new Date().getFullYear()} Fountain Brothers
       </p>
+      <p className="footer-copy">Created by Shina Adewumi | Email: faith_adewumi@uri.edu</p>
     </footer>
   );
 };
