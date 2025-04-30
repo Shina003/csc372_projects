@@ -1,6 +1,5 @@
 // src/pages/Members.jsx
 import React, { useState, useEffect } from 'react';
-import $ from 'jquery';
 import MemberCard from '../components/MemberCard';
 import MemberModal from '../components/MemberModal';
 import './Members.css';
