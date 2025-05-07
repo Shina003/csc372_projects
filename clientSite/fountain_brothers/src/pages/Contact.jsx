@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './Contact.css';
 
 const Contact = () => {
@@ -17,20 +17,6 @@ const Contact = () => {
   const [errorMessages, setErrorMessages] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const message = urlParams.get('message');
-    const success = urlParams.get('success');
-    if (message) {
-      setResponseMessage(message);
-      if (success === 'true') {
-        setShowSuccess(true);
-      } else {
-        setShowError(true);
-      }
-    }
-  }, []);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -39,7 +25,7 @@ const Contact = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.currentTarget;
     if (!form.checkValidity()) {
@@ -48,47 +34,24 @@ const Contact = () => {
     }
 
     setIsSubmitting(true);
-
-    try {
-      const formDataToSend = new FormData();
-      Object.keys(formData).forEach(key => {
-        formDataToSend.append(key, formData[key]);
+    // Simulate submission delay
+    setTimeout(() => {
+      // Always succeed in this frontend-only version
+      setShowSuccess(true);
+      setShowError(false);
+      setResponseMessage('Your message has been sent successfully!');
+      setErrorMessages({});
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        contactType: 'general',
+        message: ''
       });
-
-      const response = await fetch('process_contact.php', {
-        method: 'POST',
-        body: formDataToSend,
-        headers: { 'X-Requested-With': 'XMLHttpRequest' }
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        setShowSuccess(true);
-        setShowError(false);
-        setResponseMessage(result.message);
-        setErrorMessages({});
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          contactType: 'general',
-          message: ''
-        });
-        setValidated(false);
-        setTimeout(() => setShowSuccess(false), 5000);
-      } else {
-        setShowError(true);
-        setResponseMessage(result.message);
-        setErrorMessages(result.errors || {});
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      setShowError(true);
-      setResponseMessage('There was an error sending your message. Please try again later.');
-    } finally {
+      setValidated(false);
       setIsSubmitting(false);
-    }
+      setTimeout(() => setShowSuccess(false), 5000);
+    }, 1000);
   };
 
   return (
@@ -112,9 +75,6 @@ const Contact = () => {
       <form
         className={`contact-form ${validated ? 'validated' : ''}`}
         onSubmit={handleSubmit}
-        action="process_contact.php"
-        method="post"
-        encType="multipart/form-data"
         noValidate
       >
         <label>
