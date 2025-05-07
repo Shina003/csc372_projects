@@ -34,20 +34,14 @@ const Contact = () => {
     }
 
     setIsSubmitting(true);
+
     // Simulate submission delay
     setTimeout(() => {
-      // Always succeed in this frontend-only version
       setShowSuccess(true);
       setShowError(false);
       setResponseMessage('Your message has been sent successfully!');
       setErrorMessages({});
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        contactType: 'general',
-        message: ''
-      });
+      setFormData({ name: '', email: '', phone: '', contactType: 'general', message: '' });
       setValidated(false);
       setIsSubmitting(false);
       setTimeout(() => setShowSuccess(false), 5000);
@@ -64,9 +58,7 @@ const Contact = () => {
           {responseMessage}
           {Object.keys(errorMessages).length > 0 && (
             <ul>
-              {Object.values(errorMessages).map((msg, i) =>
-                msg ? <li key={i}>{msg}</li> : null
-              )}
+              {Object.values(errorMessages).map((msg, i) => msg && <li key={i}>{msg}</li>)}
             </ul>
           )}
         </div>
@@ -77,11 +69,12 @@ const Contact = () => {
         onSubmit={handleSubmit}
         noValidate
       >
-        <label>
+        <label className="form-group">
           Name *
           <input
             type="text"
             name="name"
+            placeholder="Your full name"
             value={formData.name}
             onChange={handleChange}
             required
@@ -89,11 +82,12 @@ const Contact = () => {
           {errorMessages.name && <span className="error-text">{errorMessages.name}</span>}
         </label>
 
-        <label>
+        <label className="form-group">
           Email *
           <input
             type="email"
             name="email"
+            placeholder="you@example.com"
             value={formData.email}
             onChange={handleChange}
             required
@@ -101,18 +95,19 @@ const Contact = () => {
           {errorMessages.email && <span className="error-text">{errorMessages.email}</span>}
         </label>
 
-        <label>
+        <label className="form-group">
           Phone
           <input
             type="tel"
             name="phone"
+            placeholder="(555) 123-4567 (optional)"
             value={formData.phone}
             onChange={handleChange}
           />
           {errorMessages.phone && <span className="error-text">{errorMessages.phone}</span>}
         </label>
 
-        <label>
+        <label className="form-group">
           Reason for Contact *
           <select
             name="contactType"
@@ -129,10 +124,11 @@ const Contact = () => {
           {errorMessages.contactType && <span className="error-text">{errorMessages.contactType}</span>}
         </label>
 
-        <label>
+        <label className="form-group">
           Message *
           <textarea
             name="message"
+            placeholder="Write your message here…"
             value={formData.message}
             onChange={handleChange}
             required
