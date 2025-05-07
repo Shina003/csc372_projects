@@ -25,20 +25,42 @@ const Contact = () => {
     }
   };
 
+  const validateForm = () => {
+    const errors = {};
+    if (!formData.name.trim()) {
+      errors.name = 'Name is required.';
+    }
+    if (!formData.email.trim()) {
+      errors.email = 'Email is required.';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      errors.email = 'Enter a valid email address.';
+    }
+    if (formData.phone && !/^\+?[0-9\-() ]{7,}$/.test(formData.phone)) {
+      errors.phone = 'Enter a valid phone number.';
+    }
+    if (!formData.message.trim()) {
+      errors.message = 'Message is required.';
+    }
+    return errors;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const form = e.currentTarget;
-    if (!form.checkValidity()) {
+    const errors = validateForm();
+    if (Object.keys(errors).length > 0) {
+      setErrorMessages(errors);
+      setResponseMessage('Please fix the errors below.');
+      setShowError(true);
       setValidated(true);
       return;
     }
 
     setIsSubmitting(true);
+    setShowError(false);
 
     // Simulate submission delay
     setTimeout(() => {
       setShowSuccess(true);
-      setShowError(false);
       setResponseMessage('Your message has been sent successfully!');
       setErrorMessages({});
       setFormData({ name: '', email: '', phone: '', contactType: 'general', message: '' });
@@ -53,16 +75,7 @@ const Contact = () => {
       <h1 className="contact-title">Contact Us</h1>
 
       {showSuccess && <div className="alert success">{responseMessage}</div>}
-      {showError && (
-        <div className="alert error">
-          {responseMessage}
-          {Object.keys(errorMessages).length > 0 && (
-            <ul>
-              {Object.values(errorMessages).map((msg, i) => msg && <li key={i}>{msg}</li>)}
-            </ul>
-          )}
-        </div>
-      )}
+      {showError && <div className="alert error">{responseMessage}</div>}
 
       <form
         className={`contact-form ${validated ? 'validated' : ''}`}
@@ -77,6 +90,7 @@ const Contact = () => {
             placeholder="Your full name"
             value={formData.name}
             onChange={handleChange}
+            className={errorMessages.name ? 'invalid' : ''}
             required
           />
           {errorMessages.name && <span className="error-text">{errorMessages.name}</span>}
@@ -90,6 +104,7 @@ const Contact = () => {
             placeholder="you@example.com"
             value={formData.email}
             onChange={handleChange}
+            className={errorMessages.email ? 'invalid' : ''}
             required
           />
           {errorMessages.email && <span className="error-text">{errorMessages.email}</span>}
@@ -103,6 +118,7 @@ const Contact = () => {
             placeholder="(555) 123-4567 (optional)"
             value={formData.phone}
             onChange={handleChange}
+            className={errorMessages.phone ? 'invalid' : ''}
           />
           {errorMessages.phone && <span className="error-text">{errorMessages.phone}</span>}
         </label>
@@ -121,7 +137,6 @@ const Contact = () => {
             <option value="membership">Membership</option>
             <option value="donation">Donation</option>
           </select>
-          {errorMessages.contactType && <span className="error-text">{errorMessages.contactType}</span>}
         </label>
 
         <label className="form-group">
@@ -131,6 +146,7 @@ const Contact = () => {
             placeholder="Write your message here…"
             value={formData.message}
             onChange={handleChange}
+            className={errorMessages.message ? 'invalid' : ''}
             required
           />
           {errorMessages.message && <span className="error-text">{errorMessages.message}</span>}
